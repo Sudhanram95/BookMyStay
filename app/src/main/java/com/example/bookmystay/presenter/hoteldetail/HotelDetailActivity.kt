@@ -19,6 +19,10 @@ class HotelDetailActivity : DaggerAppCompatActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelFactory
     lateinit var hotelDetailViewModel: HotelDetailViewModel
+//    lateinit var commentList: List<CommentModel>
+//    private val commentAdapter: CommentAdapter by lazy {
+//        CommentAdapter(commentList)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,12 @@ class HotelDetailActivity : DaggerAppCompatActivity() {
         observeHotelDetail()
         observevCommentList()
     }
+
+//    private fun initializeView() {
+//        rvComments.layoutManager = LinearLayoutManager(this@HotelDetailActivity,
+//            RecyclerView.VERTICAL, false)
+//        rvComments.adapter = commentAdapter
+//    }
 
     private fun observeHotelDetail() {
         hotelDetailViewModel.getHotelDetailResponse().observe(this, object : Observer<ViewState<HotelDetailModel>> {

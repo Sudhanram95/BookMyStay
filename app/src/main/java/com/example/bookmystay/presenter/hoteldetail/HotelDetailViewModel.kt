@@ -8,7 +8,10 @@ import com.example.bookmystay.domain.cache.CacheRepository
 import com.example.bookmystay.domain.hoteldetail.HotelDetailRepository
 import com.example.bookmystay.domain.network.NetworkCallback
 import com.example.bookmystay.domain.network.ViewState
+import com.google.gson.Gson
 import javax.inject.Inject
+import com.google.gson.reflect.TypeToken
+
 
 class HotelDetailViewModel @Inject constructor(
     val hotelDetailRepository: HotelDetailRepository,
@@ -25,12 +28,18 @@ class HotelDetailViewModel @Inject constructor(
         hotelDetailLiveData.value = ViewState.Loading()
         hotelDetailRepository.getHotelDetail(object : NetworkCallback {
             override fun onSuccess(response: Any) {
-//                cacheRepository.saveSharedPref("HotelDetail", response as HotelDetailModel)
-                hotelDetailLiveData.value = ViewState.Success(response as HotelDetailModel)
+                val hotelDetailModel = response as HotelDetailModel
+                cacheRepository.saveSharedPref("HotelDetail", Gson().toJson(hotelDetailModel))
+                hotelDetailLiveData.value = ViewState.Success(hotelDetailModel)
             }
 
             override fun onError(error: Throwable) {
-                hotelDetailLiveData.value = ViewState.Error(Throwable("Something went wrong"))
+                val cachedHotelDetail = cacheRepository.getCachedHotelDetail("HotelDetail")
+                if (cachedHotelDetail != null) {
+                    hotelDetailLiveData.value = ViewState.Success(cachedHotelDetail)
+                } else {
+                    hotelDetailLiveData.value = ViewState.Error(Throwable("Something went wrong"))
+                }
             }
         })
     }
@@ -39,11 +48,18 @@ class HotelDetailViewModel @Inject constructor(
         commentsListLiveData.value = ViewState.Loading()
         hotelDetailRepository.getAllCommentList(object : NetworkCallback {
             override fun onSuccess(response: Any) {
-                commentsListLiveData.value = ViewState.Success(response as List<CommentModel>)
+                val commentList = response as List<CommentModel>
+                cacheRepository.saveSharedPref("Comments", Gson().toJson(commentList))
+                commentsListLiveData.value = ViewState.Success(commentList)
             }
 
             override fun onError(error: Throwable) {
-                commentsListLiveData.value = ViewState.Error(Throwable("Something went wrong"))
+                val cachedCommentList = cacheRepository.getCachedCommentList("Comments")
+                if (cachedCommentList != null) {
+                    commentsListLiveData.value = ViewState.Success(cachedCommentList)
+                } else {
+                    commentsListLiveData.value = ViewState.Error(Throwable("Something went wrong"))
+                }
             }
         })
     }
