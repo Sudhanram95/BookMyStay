@@ -11,7 +11,6 @@ import com.example.bookmystay.data.hoteldetail.CommentModel
 import com.example.bookmystay.data.hoteldetail.HotelDetailModel
 import com.example.bookmystay.domain.network.ViewState
 import com.example.bookmystay.framework.di.viewmodel.ViewModelFactory
-import com.google.gson.Gson
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -36,24 +35,22 @@ class HotelDetailActivity : DaggerAppCompatActivity() {
     private fun observeHotelDetail() {
         hotelDetailViewModel.getHotelDetailResponse().observe(this, object : Observer<ViewState<HotelDetailModel>> {
             override fun onChanged(viewState: ViewState<HotelDetailModel>?) {
-                when(viewState!!.status) {
-                    ViewState.Status.LOADING -> {
+                when(viewState) {
+                    is ViewState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
 
-                    ViewState.Status.SUCCESS -> {
+                    is ViewState.Success -> {
                         progressBar.visibility = View.GONE
 
-                        viewState.data?.let {
-                            txtNameANdLocation.text = "${it.name} - ${it.location}"
-                            txtDescription.text = it.location
-                            txtRating.text = "${it.rating} Ratings"
-                            txtNoReview.text = "${it.numberOfReviews} customer review(s)"
-                            txtPrice.text = "Rs. ${it.cost}"
-                        }
+                        txtNameANdLocation.text = "${viewState.data.name} - ${viewState.data.location}"
+                        txtDescription.text = viewState.data.location
+                        txtRating.text = "${viewState.data.rating} Ratings"
+                        txtNoReview.text = "${viewState.data.numberOfReviews} customer review(s)"
+                        txtPrice.text = "Rs. ${viewState.data.cost}"
                     }
 
-                    ViewState.Status.ERROR -> {
+                    is ViewState.Error -> {
                         handleError(viewState.error)
                     }
                 }
@@ -64,22 +61,21 @@ class HotelDetailActivity : DaggerAppCompatActivity() {
     private fun observevCommentList() {
         hotelDetailViewModel.getAllCommentsResponse().observe(this, object : Observer<ViewState<List<CommentModel>>> {
             override fun onChanged(viewState: ViewState<List<CommentModel>>?) {
-                when(viewState!!.status) {
-                    ViewState.Status.LOADING -> {
+                when(viewState) {
+                    is ViewState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
 
-                    ViewState.Status.SUCCESS -> {
+                    is ViewState.Success -> {
                         progressBar.visibility = View.GONE
 
-                        val commentAdapter = CommentAdapter(viewState.data!!)
+                        val commentAdapter = CommentAdapter(viewState.data)
                         rvComments.layoutManager = LinearLayoutManager(this@HotelDetailActivity,
                             RecyclerView.VERTICAL, false)
                         rvComments.adapter = commentAdapter
                     }
 
-                    ViewState.Status.ERROR -> {
-                        progressBar.visibility = View.GONE
+                    is ViewState.Error -> {
                         handleError(viewState.error)
                     }
                 }
