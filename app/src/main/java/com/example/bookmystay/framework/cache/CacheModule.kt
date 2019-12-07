@@ -1,13 +1,10 @@
-package com.example.bookmystay.framework.persistence
+package com.example.bookmystay.framework.cache
 
-import android.content.Context
-import android.content.SharedPreferences
 import com.example.bookmystay.domain.cache.CacheDataSource
 import com.example.bookmystay.domain.cache.CacheRepository
 import com.example.bookmystay.presenter.application.BookMyStayApplication
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class CacheModule {
