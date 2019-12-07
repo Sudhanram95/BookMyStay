@@ -1,28 +1,32 @@
 package com.example.bookmystay.presenter.hoteldetail
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.bookmystay.data.hoteldetail.CommentModel
 import com.example.bookmystay.data.hoteldetail.HotelDetailModel
 import com.example.bookmystay.domain.cache.CacheRepository
+import com.example.bookmystay.domain.comment.CommentRepository
 import com.example.bookmystay.domain.hoteldetail.HotelDetailRepository
 import com.example.bookmystay.domain.network.NetworkCallback
 import com.example.bookmystay.domain.network.ViewState
 import com.google.gson.Gson
 import javax.inject.Inject
-import com.google.gson.reflect.TypeToken
 
 
 class HotelDetailViewModel @Inject constructor(
     val hotelDetailRepository: HotelDetailRepository,
-    val cacheRepository: CacheRepository
+    val cacheRepository: CacheRepository,
+    val commentRepository: CommentRepository
 ): ViewModel() {
 
     private val hotelDetailLiveData = MutableLiveData<ViewState<HotelDetailModel>>()
     private val commentsListLiveData = MutableLiveData<ViewState<List<CommentModel>>>()
+    private val submitCommentLiveData = MutableLiveData<ViewState<CommentModel>>()
 
     fun getHotelDetailResponse() = hotelDetailLiveData
     fun getAllCommentsResponse() = commentsListLiveData
+    fun getCommentModel() = submitCommentLiveData
 
     fun callGetHotelApi() {
         hotelDetailLiveData.value = ViewState.Loading()
@@ -62,6 +66,16 @@ class HotelDetailViewModel @Inject constructor(
                 }
             }
         })
+    }
+
+    fun saveComment(user: String, comment: String) {
+        val commentModel = commentRepository.saveComment(user, comment)
+
+        if (commentModel != null) {
+            submitCommentLiveData.value = ViewState.Success(commentModel)
+        } else {
+            submitCommentLiveData.value = ViewState.Error(Throwable("Enter all fields"))
+        }
     }
 
 }

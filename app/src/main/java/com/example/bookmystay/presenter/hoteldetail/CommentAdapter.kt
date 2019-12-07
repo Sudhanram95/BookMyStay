@@ -8,7 +8,7 @@ import com.example.bookmystay.R
 import com.example.bookmystay.data.hoteldetail.CommentModel
 import kotlinx.android.synthetic.main.item_comment.view.*
 
-class CommentAdapter(var commentList:List<CommentModel>) : RecyclerView.Adapter<CommentAdapter.Companion.MyViewHolder>() {
+class CommentAdapter(var commentList:ArrayList<CommentModel>) : RecyclerView.Adapter<CommentAdapter.Companion.MyViewHolder>() {
 
     companion object {
         class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {

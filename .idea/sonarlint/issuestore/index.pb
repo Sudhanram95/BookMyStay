@@ -19,3 +19,11 @@ Gapp/src/main/java/com/example/bookmystay/framework/cache/CacheModule.kt,3/1/31
 Oapp/src/main/java/com/example/bookmystay/framework/cache/CacheDataSourceImpl.kt,7/1/71cdf4756fde6dc7bf31c1f8f9d7d335afdc4f80
 †
 Vapp/src/main/java/com/example/bookmystay/presenter/hoteldetail/HotelDetailViewModel.kt,1/b/1b09ed15db488508031743291e537547ba2c5091
+€
+Papp/src/main/java/com/example/bookmystay/presenter/hoteldetail/CommentAdapter.kt,d/7/d7801ce8c1aebcd3da3f681c9cef3b6b55ef65de
+z
+Japp/src/main/java/com/example/bookmystay/usecase/GetHotelDetailResponse.kt,9/4/94229a488573f1f6d2d8c11b3b66077365d5dd56
+r
+Bapp/src/main/java/com/example/bookmystay/presenter/MainActivity.kt,0/5/05f873318f0976257e61a78addff5c17cd2d9e8f
+@
+app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
