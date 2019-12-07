@@ -19,10 +19,10 @@ class HotelDetailActivity : DaggerAppCompatActivity() {
 
     @Inject lateinit var viewModelFactory: ViewModelFactory
     lateinit var hotelDetailViewModel: HotelDetailViewModel
-//    lateinit var commentList: List<CommentModel>
-//    private val commentAdapter: CommentAdapter by lazy {
-//        CommentAdapter(commentList)
-//    }
+    var commentList: List<CommentModel> = ArrayList()
+    private val commentAdapter: CommentAdapter by lazy {
+        CommentAdapter(commentList)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +34,15 @@ class HotelDetailActivity : DaggerAppCompatActivity() {
 
         observeHotelDetail()
         observevCommentList()
+
+        initializeView()
     }
 
-//    private fun initializeView() {
-//        rvComments.layoutManager = LinearLayoutManager(this@HotelDetailActivity,
-//            RecyclerView.VERTICAL, false)
-//        rvComments.adapter = commentAdapter
-//    }
+    private fun initializeView() {
+        rvComments.layoutManager = LinearLayoutManager(this@HotelDetailActivity,
+            RecyclerView.VERTICAL, false)
+        rvComments.adapter = commentAdapter
+    }
 
     private fun observeHotelDetail() {
         hotelDetailViewModel.getHotelDetailResponse().observe(this, object : Observer<ViewState<HotelDetailModel>> {
@@ -79,10 +81,8 @@ class HotelDetailActivity : DaggerAppCompatActivity() {
                     is ViewState.Success -> {
                         progressBar.visibility = View.GONE
 
-                        val commentAdapter = CommentAdapter(viewState.data)
-                        rvComments.layoutManager = LinearLayoutManager(this@HotelDetailActivity,
-                            RecyclerView.VERTICAL, false)
-                        rvComments.adapter = commentAdapter
+                        commentAdapter.commentList = viewState.data
+                        commentAdapter.notifyDataSetChanged()
                     }
 
                     is ViewState.Error -> {
