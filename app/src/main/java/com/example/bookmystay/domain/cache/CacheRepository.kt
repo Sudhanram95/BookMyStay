@@ -1,12 +1,10 @@
 package com.example.bookmystay.domain.cache
 
-class CacheRepository(val cacheDataSource: CacheDataSource) {
+import com.example.bookmystay.data.hoteldetail.CommentModel
+import com.example.bookmystay.data.hoteldetail.HotelDetailModel
 
-    fun saveSharedPref(key: String, value: String) {
-        cacheDataSource.saveToSharedPref(key, value)
-    }
-
-    fun getCachedHotelDetail(key: String) = cacheDataSource.getCachedHotelDetail(key)
-
-    fun getCachedCommentList(key: String) = cacheDataSource.getCachedCommentList(key)
+interface CacheRepository {
+    fun saveToSharedPref(key: String, value: String)
+    fun getCachedHotelDetail(key: String): HotelDetailModel?
+    fun getCachedCommentList(key: String): List<CommentModel>?
 }
