@@ -69,12 +69,11 @@ class HotelDetailViewModel @Inject constructor(
     }
 
     fun saveComment(user: String, comment: String) {
-        val commentModel = commentRepository.saveComment(user, comment)
-
-        if (commentModel != null) {
-            submitCommentLiveData.value = ViewState.Success(commentModel)
-        } else {
+        if (user.isNullOrEmpty() && comment.isNullOrEmpty()) {
             submitCommentLiveData.value = ViewState.Error(Throwable("Enter all fields"))
+        } else {
+            val commentModel = commentRepository.saveComment(user, comment)
+            submitCommentLiveData.value = ViewState.Success(commentModel)
         }
     }
 
