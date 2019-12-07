@@ -34,7 +34,7 @@ class HotelDetailFragment: DaggerFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        hotelDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(HotelDetailViewModel::class.java)
+        hotelDetailViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(HotelDetailViewModel::class.java)
 
         observeHotelDetail()
         observevCommentList()
@@ -118,6 +118,7 @@ class HotelDetailFragment: DaggerFragment() {
                     }
 
                     is ViewState.Error -> {
+                        Log.e("HOtelDetailFrag", "Error")
                         Toast.makeText(context, viewState.error.message, Toast.LENGTH_SHORT).show()
                     }
                 }

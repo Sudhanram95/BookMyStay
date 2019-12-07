@@ -1,5 +1,6 @@
 package com.example.bookmystay.presenter.hoteldetail
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.bookmystay.data.hoteldetail.CommentModel
@@ -54,8 +55,10 @@ class HotelDetailViewModel @Inject constructor(
 
     fun saveComment(user: String, comment: String) {
         if (user.isNullOrEmpty() && comment.isNullOrEmpty()) {
+            Log.e("HOtelDetailVM", "Error")
             submitCommentLiveData.value = ViewState.Error(Throwable("Enter all fields"))
         } else {
+            Log.e("HOtelDetailVM", "Success")
             val commentModel = commentRepository.submitComment(user, comment)
             submitCommentLiveData.value = ViewState.Success(commentModel)
         }
